@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<title>DataTables example - Zero configuration</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <!-- Font awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" 
+              integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+        <!-- jQuery -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+        <!-- DataTable -->
+
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- main script -->
+    <script src="js/main.js" type="text/javascript" class="init"></script>
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Библиотека </a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+<div class="contariner">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+     <li class="nav-item">
+       <a class="nav-link active" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">Книги</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" id="authors-tab" data-toggle="tab" href="#authors" role="tab" aria-controls="authors" aria-selected="false">Авторы</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" id="genres-tab" data-toggle="tab" href="#genres" role="tab" aria-controls="genres" aria-selected="false">Жанры</a>
+     </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="books" role="tabpanel" aria-labelledby="books-tab">
+	<div class="row mx-md-n5">
+	  <div class="col px-md-5">
+	      <div class="p-3 border bg-light">
+              <div class="row">
+            	  <table id="Book-table" class="display compact">
+	                 <thead>
+            	       <tr>
+	                    <th>id</th>
+            	        <th>Наименование</th>
+            	        <th>Автор</th>
+            	        <th>Жанр</th>
+        	            <th>ISBN</th>
+            	        <th>Издательство</th>
+                    	<th>Год издания</th>
+            	        <th>Место издания</th>
+			            <th></th>
+                        <th></th>
+                        <th></th>
+    	               </tr>
+            	     </thead>
+	              </table>
+                  <br>
+                  <button type="button" class="btn btn-primary" onclick="addBookRow()">Добавить книгу</button>
+              </div>
+              <div class="row">
+                  <div class="collapse" id="collapseComments">
+                      <div class="list-group" id="comments">
+                          <!-- сюда добавляем комментарии -->
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-primary" onclick="addCommentRow()">Добавить комментарий</button>
+                  </div>
+              </div>
+	      </div>
+	  </div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	</div>
+
+
+    </div> <!-- tab-pane -->
+
+
+    <div class="tab-pane fade" id="authors" role="tabpanel" aria-labelledby="authors-tab">
+	<div class="row mx-md-n5">
+	  <div class="col px-md-5">
+	      <div class="p-3 border bg-light">
+        	  <table id="Author-table" class="display compact">
+	             <thead>
+        	       <tr>
+	                <th>id</th>
+        	        <th>Автор</th>
+                	<th>Дата рождения</th>
+	                <th>Телефон</th>
+        	        <th>email</th>
+                	<th>Адрес</th>
+                	<th></th>
+                	<th></th>
+	               </tr>
+        	     </thead>
+	          </table>
+              <br>
+              <button type="button" class="btn btn-primary" onclick="addAuthorRow()">Добавить автора</button>
+	      </div>
+	  </div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	</div>
+    </div>  <!-- tab-pane -->
+    <div class="tab-pane fade" id="genres" role="tabpanel" aria-labelledby="genres-tab">
+	<div class="row mx-md-n5">
+	  <div class="col px-md-5">
+	      <div class="p-3 border bg-light">
+        	  <table id="Genre-table" class="display compact">
+	             <thead>
+        	       <tr>
+	                <th>id</th>
+        	        <th>Жанр</th>
+        			<th></th>
+		        	<th></th>
+	               </tr>
+        	     </thead>
+	          </table>
+              <br>
+              <button type="button" class="btn btn-primary" onclick="addGenreRow()">Добавить жанр</button>
+	      </div>
+	  </div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	  <div class="col px-md-5"><div class="p-3"></div></div>
+	</div>
+    </div>  <!-- tab-pane -->
+
+</div>
+</div>
+
+
+<!-- модальное окно для жанра -->
+<div class="modal fade" tabindex="-1" id="editGenreRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalGenreTitle">Жанр литературы</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsGenreForm">
+                    <input type="hidden" id="idGenre" name="idGenre">
+
+                    <div class="form-group">
+                        <label for="nameGenre" class="col-form-label">Вид жанра</label>
+                        <input type="text" class="form-control" id="nameGenre" name="nameGenre"
+                               placeholder="Наименование жанра">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="fa fa-close"></span>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveGenreRow()">
+                    <span class="fa fa-check"></span>
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- модальное окно для автора -->
+<div class="modal fade" tabindex="-1" id="editAuthorRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalAuthorTitle">Писатель</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsAuthorForm">
+                    <input type="hidden" id="idAuthor" name="idAuthor">
+
+                    <div class="form-group">
+                       <div class="row">
+                           <div class="col-md-6">
+                                <label for="nameAuthor" class="col-form-label">Автор</label>
+                           </div>
+                           <div class="col-md-6">
+                                <input type="text" class="form-control" id="nameAuthor" name="nameAuthor" placeholder="Введите ФИО автора">
+                           </div>
+                       </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="birthDateAuthor" class="col-form-label">Дата рождения</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="birthDateAuthor" name="birthDateAuthor" placeholder="Введите дату рождения">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="phoneAuthor" class="col-form-label">Телефон</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" class="form-control" id="phoneAuthor" name="phoneAuthor" placeholder="Введите телефон">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="emailAuthor" class="col-form-label">Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" id="emailAuthor" name="emailAuthor" placeholder="Введите email">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                        <label for="addressAuthor" class="col-form-label">Адрес</label>
+                            </div>
+                            <div class="col-md-6">
+                        <input type="text" class="form-control" id="addressAuthor" name="addressAuthor"
+                               placeholder="Введите адрес">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="fa fa-close"></span>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveAuthorRow()">
+                    <span class="fa fa-check"></span>
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- модальное окно для книги -->
+<div class="modal fade" tabindex="-1" id="editBookRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalBookTitle">Книга</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsBookForm">
+                    <input type="hidden" id="idBook" name="idBook">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="nameBook" class="col-form-label">Название книги</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="nameBook" name="nameBook" placeholder="Введите название книги">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="authoridBook" class="col-form-label">Автор</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="authoridBook" name="authoridBook" placeholder="Введите id автора">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="genreidBook" class="col-form-label">Жанр</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="genreidBook" name="genreidBook" placeholder="Введите жанр">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="isbnBook" class="col-form-label">ISBN</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" class="form-control" id="isbnBook" name="isbnBook" placeholder="Введите ISBN">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="publishingHouseBook" class="col-form-label">Издательство</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="publishingHouseBook" name="publishingHouseBook" placeholder="Введите издательство">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="publicationYearBook" class="col-form-label">Год издания</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" class="form-control" id="publicationYearBook" name="publicationYearBook"
+                                       placeholder="Введите год издания">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="publicationPlaceBook" class="col-form-label">Место издания</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="publicationPlaceBook" name="publicationPlaceBook"
+                                       placeholder="Введите место издания">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="fa fa-close"></span>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveBookRow()">
+                    <span class="fa fa-check"></span>
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- модальное окно для комментария -->
+<div class="modal fade" tabindex="-1" id="editCommentRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalCommentTitle">Комментарий</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsCommentForm">
+                    <input type="hidden" id="idCommentBook" name="idCommentBook">
+                    <input type="hidden" id="idComment" name="idComment">
+
+                    <div class="form-group">
+                        <label for="nameGenre" class="col-form-label">Имя пользователя</label>
+                        <input type="text" class="form-control" id="nameComment" name="nameComment"
+                               placeholder="Имя пользователя">
+                    </div>
+                    <div class="form-group">
+                        <label for="CommentComment" class="col-form-label">Комментарий</label>
+                        <textarea class="form-control" id="commentComment" name="commentComment"
+                               placeholder="Введите комментарий" ></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="fa fa-close"></span>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveCommentRow()">
+                    <span class="fa fa-check"></span>OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
