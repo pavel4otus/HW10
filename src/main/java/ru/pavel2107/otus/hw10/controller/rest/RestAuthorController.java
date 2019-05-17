@@ -20,25 +20,25 @@ public class RestAuthorController {
         this.service = service;
     }
 
-    @GetMapping( value = "/rest/authors/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( value = "/rest/authors", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Author> listAuthors(){
         List<Author> list = service.findAll();
         return list;
     }
 
-    @DeleteMapping( value = "/rest/authors/delete")
+    @DeleteMapping( value = "/rest/authors")
     @ResponseStatus( value = HttpStatus.NO_CONTENT)
     public void delete(@RequestParam( value = "id") Long id){
         service.delete( id);
     }
 
-    @GetMapping( value = "/rest/authors/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Author get( @RequestParam( value = "id") Long id){
+    @GetMapping( value = "/rest/authors/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Author get( @PathVariable( value = "id") Long id){
         Author g =  service.find( id);
         return g;
     }
 
-    @PostMapping( value = "/rest/authors/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( value = "/rest/authors", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void save(@RequestBody Author author){
       service.save( author);

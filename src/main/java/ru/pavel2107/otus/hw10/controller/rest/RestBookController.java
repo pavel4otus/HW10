@@ -20,26 +20,26 @@ public class RestBookController {
         this.service = service;
     }
 
-    @GetMapping( value = "/rest/books/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( value = "/rest/books", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Book> listBooks(){
         List<Book> list = service.findAll();
         return list;
     }
 
-    @DeleteMapping( value = "/rest/books/delete")
+    @DeleteMapping( value = "/rest/books")
     @ResponseStatus( value = HttpStatus.NO_CONTENT)
     public void delete( @RequestParam( value = "id") Long id){
         service.delete( id);
     }
 
 
-    @GetMapping( value = "/rest/books/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Book get( @RequestParam( value = "id") Long id){
+    @GetMapping( value = "/rest/books/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Book get( @PathVariable( value = "id") Long id){
         Book g =  service.find( id);
         return g;
     }
 
-    @PostMapping( value = "/rest/books/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( value = "/rest/books", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void save(@RequestBody Book book){
         book = service.save( book);

@@ -25,13 +25,13 @@ public class RestCommentController {
         this.bookService = bookService;
     }
 
-    @GetMapping( value = "/rest/comments/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Comment> listComments(@RequestParam( value = "id") Long bookId){
+    @GetMapping( value = "/rest/comments/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Comment> listComments(@PathVariable( value = "id") Long bookId){
         List<Comment> list = service.findAll( bookId);
         return list;
     }
 
-    @PostMapping( value = "/rest/comments/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( value = "/rest/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void save( @RequestBody CommentDTO commentDTO){
         Comment comment = new Comment();

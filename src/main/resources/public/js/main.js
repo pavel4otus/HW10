@@ -1,20 +1,7 @@
-var ajaxBooksGet    = '/rest/books/get';
-var ajaxBooksDelete = '/rest/books/delete';
-var ajaxBooksSave   = '/rest/books/save';
-var ajaxBooksList   = '/rest/books/list';
-
-var ajaxAuthorsGet    = '/rest/authors/get';
-var ajaxAuthorsSave   = '/rest/authors/save';
-var ajaxAuthorsDelete = '/rest/authors/delete/';
-var ajaxAuthorsList   = '/rest/authors/list';
-
-var ajaxGenresGet    = '/rest/genres/get';
-var ajaxGenresSave   = '/rest/genres/save';
-var ajaxGenresDelete = '/rest/genres/delete';
-var ajaxGenresList   = '/rest/genres/list';
-
-var ajaxCommentsList = '/rest/comments/list';
-var ajaxCommentsSave = '/rest/comments/save';
+var ajaxBooks    = '/rest/books';
+var ajaxAuthors  = '/rest/authors';
+var ajaxGenres   = '/rest/genres';
+var ajaxComments = '/rest/comments';
 
 
 //
@@ -28,22 +15,34 @@ function failMessage( xhr, status, errorThrown ) {
 }
 
 //
+// обновление данных в таблице
+//
+function commonReloadTable( theType) {
+    console.log(theType + " reloading");
+    table = $( '#' + theType + '-table').DataTable();
+    table.ajax.reload();
+    console.log(theType + "reloaded");
+}
+
+//
 // общая функция удаления
 //
-function commonDeleteRow( theUrl, theId){
+function commonDeleteRow( theUrl, theId, theType){
     if (confirm( 'Удалить строку ?')) {
         $.ajax({ url: theUrl,
             type: "DELETE",
             data: { "id" : theId}
         })
             .done(function ( data) {
-                // context.updateTable();
-                // successNoty("common.deleted");
+                commonReloadTable( theType);
             })
             .fail( failMessage)
     }
 }
 
+//
+// добавляем строку
+//
 function addCommomRow( theType) {
     $( '#edit' + theType + 'Row').find(":input").val("");
     $( '#edit' + theType + 'Row').modal();
@@ -55,7 +54,7 @@ function addCommomRow( theType) {
 // обновление для авторов и жанров
 //
 function commonUpdateRow( theUrl, theId, theType) {
-    $.get( theUrl, { "id": theId}
+    $.get( theUrl + "/" + theId
     )
         .done(function ( data) {
             // context.updateTable();
@@ -76,7 +75,9 @@ function commonUpdateRow( theUrl, theId, theType) {
 
 }
 
-
+//
+// запиь данных в СУБД и рефреш таблицы
+//
 function commonSaveRow( theUrl, aData, theType){
     $.ajax({
         url:theUrl,
@@ -85,9 +86,14 @@ function commonSaveRow( theUrl, aData, theType){
         contentType:"application/json; charset=utf-8",
         dataType:"jsonp"})
         .done(function () {
-            table = $( '#' + theType + '-table').DataTable();
-            table.ajax.reload();
             $( '#edit' + theType +  'Row').modal( "hide");
+            if (theType == 'Comment') {
+                showComments(  $( '#idCommentBook').val());
+            }
+            else
+            {
+                commonReloadTable(theType);
+            }
         })
         .fail( failMessage);
 }
@@ -96,15 +102,15 @@ function commonSaveRow( theUrl, aData, theType){
 // авторы
 //
 function updateAuthorRow( authorId){
-    commonUpdateRow( ajaxAuthorsGet, authorId, 'Author');
+    commonUpdateRow( ajaxAuthors, authorId, 'Author');
 }
 
 function deleteAuthorRow( authorId){
-    commonDeleteRow( ajaxAuthorsDelete, authorId);
+    commonDeleteRow( ajaxAuthors, authorId, 'Author');
 }
 
 function saveAuthorRow(){
-    commonSaveRow( ajaxAuthorsSave(),
+    commonSaveRow( ajaxAuthors,
         { 'id': $( '#idAuthor').val(),
             'name': $( '#nameAuthor').val(),
             'birthDate': $( '#birthDateAuthor').val(),
@@ -122,16 +128,15 @@ function addAuthorRow() {
 // жанры
 //
 function updateGenreRow( genreId){
-    commonUpdateRow( ajaxGenresGet, genreId, 'Genre');
+    commonUpdateRow( ajaxGenres, genreId, 'Genre');
 }
 
 function saveGenreRow(){
-    commonSaveRow( ajaxGenresSave, { 'id': $( '#idGenre').val(), 'name': $( '#nameGenre').val()}, 'Genre');
+    commonSaveRow( ajaxGenres, { 'id': $( '#idGenre').val(), 'name': $( '#nameGenre').val()}, 'Genre');
 }
 
-
 function deleteGenreRow( authorId){
-    commonDeleteRow( ajaxGenresDelete, authorId);
+    commonDeleteRow( ajaxGenres, authorId, 'Genre');
 }
 
 function addGenreRow() {
@@ -142,11 +147,11 @@ function addGenreRow() {
 // книги
 //
 function updateBookRow( bookId){
-    commonUpdateRow( ajaxBooksGet, bookId, 'Book');
+    commonUpdateRow( ajaxBooks, bookId, 'Book');
 }
 
-function deleteBookRow( authorId){
-    commonDeleteRow( ajaxBooksDelete, authorId);
+function deleteBookRow( bookId){
+    commonDeleteRow( ajaxBooks, bookId, 'Book');
 }
 
 function saveBookRow(){
@@ -161,7 +166,7 @@ function saveBookRow(){
             'publicationYear' : $( '#publicationYearBook').val(),
             'publicationPlace': $( '#publicationPlaceBook').val()};
 
-    commonSaveRow( ajaxBooksSave, book, 'Book');
+    commonSaveRow( ajaxBooks, book, 'Book');
 }
 
 function addBookRow() {
@@ -177,7 +182,7 @@ function showComments( bookId){
     comments.empty();
     $( '#idCommentBook').val( bookId);
 
-        $.get( ajaxCommentsList, { "id": bookId} )
+        $.get( ajaxComments + "/" + bookId )
         .done(function ( data) {
             console.log( 'получено' + JSON.stringify( data));
             $.each(data, function (key, value) {
@@ -199,7 +204,7 @@ function addCommentRow() {
 }
 
 function saveCommentRow() {
-    commonSaveRow( ajaxCommentsSave,
+    commonSaveRow( ajaxComments,
         { 'idBook' : $( '#idCommentBook').val(),
           'name'   : $( '#nameComment').val(),
           'comment': $( '#commentComment').val()
@@ -227,7 +232,7 @@ function booksInit(){
             infoFiltered: "(выбрано _MAX_ записей)"
         },
         ajax: {
-            url    : ajaxBooksList,
+            url    : ajaxBooks,
             type   : 'GET',
             dataSrc: ''
         },
@@ -280,7 +285,7 @@ function genresInit(){
             infoFiltered: "(выбрано _MAX_ записей)"
         },
         ajax: {
-            url    : ajaxGenresList,
+            url    : ajaxGenres,
             type   : 'GET',
             dataSrc: ''
         },
@@ -319,7 +324,7 @@ function authorsInit(){
             infoFiltered: "(выбрано _MAX_ записей)"
         },
         ajax: {
-            url    : ajaxAuthorsList,
+            url    : ajaxAuthors,
             type   : 'GET',
             dataSrc: ''
         },

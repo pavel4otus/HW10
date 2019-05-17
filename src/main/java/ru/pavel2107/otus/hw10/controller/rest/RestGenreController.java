@@ -20,27 +20,27 @@ public class RestGenreController {
         this.service = service;
     }
 
-    @GetMapping( value = "/rest/genres/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping( value = "/rest/genres", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Genre> listGenres(){
         List<Genre> list = service.findAll();
         return list;
     }
 
-    @DeleteMapping( value = "/rest/genres/delete")
+    @DeleteMapping( value = "/rest/genres")
     @ResponseStatus( HttpStatus.NO_CONTENT)
     public void delete( @RequestParam( value = "id") Long id){
         service.delete( id);
     }
 
 
-    @GetMapping( value = "/rest/genres/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Genre get( @RequestParam( value = "id") Long id){
+    @GetMapping( value = "/rest/genres/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Genre get( @PathVariable( value = "id") Long id){
         Genre g =  service.find( id);
 
         return g;
     }
 
-    @PostMapping( value = "/rest/genres/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( value = "/rest/genres", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void save(@RequestBody Genre  genre){
         genre =service.save( genre);
